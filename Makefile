@@ -1,8 +1,26 @@
+BINARY=aggregator
+BIN=bin
+
+SCHEMA:=sql/schema
+DB:=$(shell grep DATABASE_URL .env | sed 's/DATABASE_URL=//; s/?.*//')
+
+all: clean test build
+
+clean:
+	@echo cleaning...
+	@rm -f ${BIN}/${BINARY}
+
 build:
-	go build -o bin/blog-aggregator
+	@go build -o ${BIN}/${BINARY}
 
 run: build
-	./bin/./blog-aggregator
+	./${BIN}/${BINARY}
 
 test:
-	go test ./...
+	@go test ./... -v
+
+migrate/up:
+	@goose -dir ${SCHEMA} postgres ${DB} up
+
+migrate/down:
+	@goose -dir ${SCHEMA} postgres ${DB} down
