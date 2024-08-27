@@ -39,10 +39,14 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("POST /v1/users", cfg.createUserHandler)
-	mux.Handle("GET /v1/users", cfg.middlewareAuth(cfg.getUserHandler))
+	mux.HandleFunc("GET /v1/users", cfg.middlewareAuth(cfg.getUserHandler))
 
 	mux.HandleFunc("POST /v1/feeds", cfg.middlewareAuth(cfg.createFeedHandler))
 	mux.HandleFunc("GET /v1/feeds", cfg.getFeedsHandler)
+
+	mux.HandleFunc("POST /v1/feed_follows", cfg.middlewareAuth(cfg.createFeedFollowHandler))
+	mux.HandleFunc("GET /v1/feed_follows", cfg.middlewareAuth(cfg.getFeedFollowsHandler))
+	mux.HandleFunc("DELETE /v1/feed_follows/{feedFollowID}", cfg.middlewareAuth(cfg.deleteFeedFollowHandler))
 
 	mux.HandleFunc("GET /v1/healthz", healthzHandler)
 	mux.HandleFunc("GET /v1/err", errHandler)
