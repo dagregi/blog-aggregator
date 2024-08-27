@@ -39,7 +39,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("POST /v1/users", cfg.createUserHandler)
-	mux.HandleFunc("GET /v1/users", cfg.getUserHandler)
+	mux.Handle("GET /v1/users", cfg.middlewareAuth(cfg.getUserHandler))
 
 	mux.HandleFunc("GET /v1/healthz", healthzHandler)
 	mux.HandleFunc("GET /v1/err", errHandler)
