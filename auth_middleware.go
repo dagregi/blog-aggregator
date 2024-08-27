@@ -9,8 +9,8 @@ import (
 
 type authHandler func(http.ResponseWriter, *http.Request, database.User)
 
-func (cfg *apiConfig) middlewareAuth(handler authHandler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+func (cfg *apiConfig) middlewareAuth(handler authHandler) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
 		apiKey, err := auth.GetAPIKey(req.Header)
 		if err != nil {
 			respondWithError(w, http.StatusUnauthorized, "Couldn't find api key")
@@ -24,5 +24,5 @@ func (cfg *apiConfig) middlewareAuth(handler authHandler) http.Handler {
 		}
 
 		handler(w, req, user)
-	})
+	}
 }
