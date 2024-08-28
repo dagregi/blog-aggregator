@@ -49,6 +49,8 @@ func main() {
 	mux.HandleFunc("GET /v1/feed_follows", cfg.middlewareAuth(cfg.getFeedFollowsHandler))
 	mux.HandleFunc("DELETE /v1/feed_follows/{feedFollowID}", cfg.middlewareAuth(cfg.deleteFeedFollowHandler))
 
+	mux.HandleFunc("GET /v1/posts", cfg.middlewareAuth(cfg.getPostsHandler))
+
 	mux.HandleFunc("GET /v1/healthz", healthzHandler)
 	mux.HandleFunc("GET /v1/err", errHandler)
 

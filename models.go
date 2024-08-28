@@ -90,3 +90,42 @@ func dbTimeToTime(dbTime sql.NullTime) *time.Time {
 	}
 	return nil
 }
+
+func dbStringToString(dbString sql.NullString) *string {
+	if dbString.Valid {
+		return &dbString.String
+	}
+	return nil
+}
+
+type Post struct {
+	ID          uuid.UUID  `json:"id"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
+	Title       string     `json:"title"`
+	Url         string     `json:"url"`
+	Description *string    `json:"description"`
+	PublishedAt *time.Time `json:"published_at"`
+	FeedID      uuid.UUID  `json:"feed_id"`
+}
+
+func dbPostToPost(dbPost database.Post) Post {
+	return Post{
+		ID:          dbPost.ID,
+		CreatedAt:   dbPost.CreatedAt,
+		UpdatedAt:   dbPost.UpdatedAt,
+		Title:       dbPost.Title,
+		Url:         dbPost.Url,
+		Description: dbStringToString(dbPost.Description),
+		PublishedAt: dbTimeToTime(dbPost.PublishedAt),
+		FeedID:      dbPost.FeedID,
+	}
+}
+
+func dbPostsToPosts(posts []database.Post) []Post {
+	result := make([]Post, len(posts))
+	for i, post := range posts {
+		result[i] = dbPostToPost(post)
+	}
+	return result
+}
