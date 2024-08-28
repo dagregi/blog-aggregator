@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/dagregi/blog-aggregator/internal/database"
@@ -26,22 +27,24 @@ func dbUserToUser(user database.User) User {
 }
 
 type Feed struct {
-	ID        uuid.UUID `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	Name      string    `json:"name"`
-	URL       string    `json:"url"`
-	UserID    uuid.UUID `json:"user_id"`
+	ID            uuid.UUID  `json:"id"`
+	CreatedAt     time.Time  `json:"created_at"`
+	UpdatedAt     time.Time  `json:"updated_at"`
+	Name          string     `json:"name"`
+	URL           string     `json:"url"`
+	UserID        uuid.UUID  `json:"user_id"`
+	LastFetchedAt *time.Time `json:"last_fetched_at"`
 }
 
 func dbFeedToFeed(feed database.Feed) Feed {
 	return Feed{
-		ID:        feed.ID,
-		CreatedAt: feed.CreatedAt,
-		UpdatedAt: feed.UpdatedAt,
-		Name:      feed.Name,
-		URL:       feed.Url,
-		UserID:    feed.UserID,
+		ID:            feed.ID,
+		CreatedAt:     feed.CreatedAt,
+		UpdatedAt:     feed.UpdatedAt,
+		Name:          feed.Name,
+		URL:           feed.Url,
+		UserID:        feed.UserID,
+		LastFetchedAt: dbTimeToTime(feed.LastFetchedAt),
 	}
 }
 
@@ -79,4 +82,11 @@ func dbFeedFollowsToFeedFollows(dbFeedFollows []database.FeedFollow) []FeedFollo
 	}
 
 	return feedFollows
+}
+
+func dbTimeToTime(dbTime sql.NullTime) *time.Time {
+	if dbTime.Valid {
+		return &dbTime.Time
+	}
+	return nil
 }
