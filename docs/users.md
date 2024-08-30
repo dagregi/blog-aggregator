@@ -81,11 +81,3 @@
     "error": "Couldn't get user"
 }
 ```
-
--   500 Internal Server Error:
-
-```json
-{
-    "error": "Internal Server Error"
-}
-```

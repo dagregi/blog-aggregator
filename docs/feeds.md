@@ -52,11 +52,19 @@
 }
 ```
 
+-   401 Unauthorized:
+
+```json
+{
+    "error": "Couldn't find API key"
+}
+```
+
 -   500 Internal Server Error:
 
 ```json
 {
-    "error": "Internal Server Error"
+    "error": "Couldn't create feed"
 }
 ```
 
@@ -96,13 +104,5 @@
 ```json
 {
     "error": "Couldn't get feeds"
-}
-```
-
--   500 Internal Server Error:
-
-```json
-{
-    "error": "Internal Server Error"
 }
 ```

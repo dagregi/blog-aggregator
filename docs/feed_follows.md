@@ -38,11 +38,19 @@
 }
 ```
 
+-   401 Unauthorized:
+
+```json
+{
+    "error": "Couldn't find API key"
+}
+```
+
 -   500 Internal Server Error:
 
 ```json
 {
-    "error": "Internal Server Error"
+    "error": "Couldn't follow feed"
 }
 ```
 
