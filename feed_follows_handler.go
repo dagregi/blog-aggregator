@@ -22,7 +22,7 @@ func (cfg *apiConfig) createFeedFollowHandler(
 	params := feedFollowParams{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Error decoding parameters")
+		respondWithError(w, http.StatusBadRequest, "Invalid Request")
 		return
 	}
 
@@ -38,7 +38,7 @@ func (cfg *apiConfig) createFeedFollowHandler(
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, dbFeedFollowToFeedFollow(feedFollow))
+	respondWithJSON(w, http.StatusCreated, dbFeedFollowToFeedFollow(feedFollow))
 }
 
 func (cfg *apiConfig) deleteFeedFollowHandler(
@@ -61,7 +61,7 @@ func (cfg *apiConfig) deleteFeedFollowHandler(
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, struct{}{})
+	respondWithJSON(w, http.StatusNoContent, struct{}{})
 }
 
 func (cfg *apiConfig) getFeedFollowsHandler(

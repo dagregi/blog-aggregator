@@ -19,7 +19,7 @@ func (cfg *apiConfig) createFeedHandler(w http.ResponseWriter, req *http.Request
 	params := feedParams{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Error decoding parameters")
+		respondWithError(w, http.StatusBadRequest, "Invalid Request")
 		return
 	}
 
@@ -48,7 +48,7 @@ func (cfg *apiConfig) createFeedHandler(w http.ResponseWriter, req *http.Request
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, struct {
+	respondWithJSON(w, http.StatusCreated, struct {
 		Feed       Feed       `json:"feed"`
 		FeedFollow FeedFollow `json:"feed_follow"`
 	}{

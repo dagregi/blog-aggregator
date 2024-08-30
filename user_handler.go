@@ -18,7 +18,7 @@ func (cfg *apiConfig) createUserHandler(w http.ResponseWriter, req *http.Request
 	params := userParams{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Error decoding parameters")
+		respondWithError(w, http.StatusBadRequest, "Invalid Request")
 		return
 	}
 
@@ -33,7 +33,7 @@ func (cfg *apiConfig) createUserHandler(w http.ResponseWriter, req *http.Request
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, dbUserToUser(user))
+	respondWithJSON(w, http.StatusCreated, dbUserToUser(user))
 }
 
 func (cfg *apiConfig) getUserHandler(w http.ResponseWriter, req *http.Request, user database.User) {
